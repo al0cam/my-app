@@ -2,7 +2,7 @@
 import { Hono } from 'hono';
 import { handle } from 'hono/vercel';
 import { cors } from 'hono/cors';
-import { getContentfulClient } from './service'; // Import the function
+import { getContentfulClient } from './service.js'; // Import the function
 
 // This is crucial for telling Vercel to deploy this as an Edge Function
 // export const config = {
