@@ -5,10 +5,10 @@ import { cors } from 'hono/cors';
 import { getContentfulClient } from './service'; // Import the function
 
 // This is crucial for telling Vercel to deploy this as an Edge Function
-export const config = {
-  runtime: 'edge',
-};
-
+// export const config = {
+//   runtime: 'edge',
+// };
+//
 const app = new Hono();
 
 app.use(
