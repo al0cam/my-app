@@ -1,17 +1,23 @@
 import { createClient } from 'contentful';
-import 'dotenv/config';
+import { env } from 'hono/adapter'; // Import 'env' from 'hono/adapter'
 
-const spaceId = process.env.CONTENTFUL_SPACE_ID;
-const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
+export const runtime = 'edge';
 
-if (!spaceId || !accessToken) {
-  console.error('Missing Contentful environment variables!');
-  console.error('Please ensure CONTENTFUL_SPACE_ID and CONTENTFUL_ACCESS_TOKEN are set in your .env file or environment.');
-}
+export const getContentfulClient = (c: any) => { // 'c' is the Hono context object
+  const { CONTENTFUL_SPACE_ID, CONTENTFUL_ACCESS_TOKEN } = env<{
+    CONTENTFUL_SPACE_ID: string;
+    CONTENTFUL_ACCESS_TOKEN: string;
+  }>(c);
 
-export const contentfulClient = createClient({
-  space: spaceId || '',
-  accessToken: accessToken || '',
-});
+  if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_ACCESS_TOKEN) {
+    console.error('Missing Contentful environment variables in Vercel environment!');
+  }
 
-console.log('Contentful client initialized.');
+  const contentfulClient = createClient({
+    space: CONTENTFUL_SPACE_ID,
+    accessToken: CONTENTFUL_ACCESS_TOKEN,
+  });
+
+  console.log('Contentful client initialized for Edge Function.');
+  return contentfulClient;
+};
